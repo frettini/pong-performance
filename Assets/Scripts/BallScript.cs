@@ -1,21 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BallScript : MonoBehaviour
 {
 
     [SerializeField]
-    float speed;
+    float speed = 6;
+
+    [SerializeField]
+    float dividingFac = 100;
+
+    [SerializeField]
+    float dirFac = 1.5f;
 
     float radius;
     Vector2 direction;
+
+    PaletteScript ps;
+    float paddleVel;
+
+    
+    
 
     // Start is called before the first frame update
     void Start()
     {
         direction = Vector2.one.normalized;
         radius = transform.localScale.x / 2;
+
     }
 
     // Update is called once per frame
@@ -52,21 +66,32 @@ public class BallScript : MonoBehaviour
     {
         if(other.tag == "Palette")
         {
-            
-            
-            bool isRight = other.GetComponent<PaletteScript>().isRight;
-            Debug.Log(isRight);
+
+            ps = other.GetComponent<PaletteScript>();
+
+            paddleVel = ps.velocity;
+            bool isRight = ps.isRight;
+
+            direction.Normalize();
 
             if (isRight && direction.x > 0)
             {
-                Debug.Log("isRight");
+                
                 direction.x = -direction.x;
+                Debug.Log(paddleVel);
+                direction.y += paddleVel / dividingFac;
+
+
             }
             if (!isRight && direction.x < 0)
             {
-                Debug.Log("isRight not ");
+                
                 direction.x = -direction.x;
+                Debug.Log(paddleVel);
+                direction.y += paddleVel / dividingFac;
             }
+
+            direction.x *= (1 + Math.Abs(direction.y)) / dirFac;
         }
     }
    

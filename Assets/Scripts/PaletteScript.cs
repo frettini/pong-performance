@@ -14,12 +14,12 @@ public class PaletteScript : MonoBehaviour
     
     string input;
     public bool isRight;
+    public float velocity;
 
     OSCTransmitter transmitter;
 
-    
-    
-    
+    float oldpos, newpos;
+
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +33,7 @@ public class PaletteScript : MonoBehaviour
         // Set remote port;
         transmitter.RemotePort = 7000;
 
-
+        oldpos = transform.position.y;
         
 
     }
@@ -60,19 +60,21 @@ public class PaletteScript : MonoBehaviour
 
             isRight = isRightPaddle;
             input = "PaletteLeft";
-
-            
-
         }
-
-
-      
-
-        
 
         transform.position = pos;
         transform.name = input;
     }
+
+
+    private void calVelocity()
+    {
+        newpos = transform.position.y;
+        velocity = (newpos - oldpos) / Time.deltaTime;
+        oldpos = newpos;
+
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -100,5 +102,7 @@ public class PaletteScript : MonoBehaviour
 
         // Send message.
         transmitter.Send(message);
+
+        calVelocity();
     }
 }
