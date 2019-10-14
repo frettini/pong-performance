@@ -29,7 +29,7 @@ public class PaletteScript : MonoBehaviour
         // Creating a transmitter.
         transmitter = gameObject.AddComponent<OSCTransmitter>();
         // Set remote host address.
-        transmitter.RemoteHost = "192.168.43.180";
+        transmitter.RemoteHost = "127.0.0.1";
         // Set remote port;
         transmitter.RemotePort = 7000;
 
