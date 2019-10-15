@@ -95,7 +95,7 @@ public class PaletteScript : MonoBehaviour
 
 
         var message = new OSCMessage(string.Format("/{0}", input));
-        Debug.Log(message.Address);
+
         // Populate values.
         message.AddValue(OSCValue.Int((int)transform.position.y));
         

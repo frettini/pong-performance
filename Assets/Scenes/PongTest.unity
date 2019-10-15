@@ -268,6 +268,8 @@ MonoBehaviour:
   closeOnPause: 0
   mapBundle: {fileID: 0}
   workInEditor: 1
+  localHostMode: 0
+  localHost: 192.168.0.56
   localPort: 8000
 --- !u!114 &1279709027
 MonoBehaviour:
@@ -285,8 +287,10 @@ MonoBehaviour:
   closeOnPause: 0
   mapBundle: {fileID: 0}
   workInEditor: 0
+  localHostMode: 0
   localPortMode: 2
   localReceiver: {fileID: 0}
+  localHost: 192.168.0.56
   localPort: 7000
   remoteHost: 127.0.0.1
   remotePort: 7000

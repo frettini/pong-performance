@@ -21,6 +21,7 @@ public class BallScript : MonoBehaviour
     PaletteScript ps;
     float paddleVel;
 
+    public GameManager gm;
     
     
 
@@ -50,13 +51,15 @@ public class BallScript : MonoBehaviour
         if(transform.position.x < GameManager.bottomLeft.x + radius && direction.x < 0)
         {
             Debug.Log("Right Player Wins");
-            //gameover
+            gm.IncrementScore("PaletteRight");
+            Destroy(this.gameObject);
         }
 
         if (transform.position.x > GameManager.topRight.x + radius && direction.x > 0)
         {
             Debug.Log("Left Player Wins");
-            //gameover
+            gm.IncrementScore("PaletteLeft");
+            Destroy(this.gameObject);
 
         }
 
@@ -78,7 +81,6 @@ public class BallScript : MonoBehaviour
             {
                 
                 direction.x = -direction.x;
-                Debug.Log(paddleVel);
                 direction.y += paddleVel / dividingFac;
 
 
@@ -87,7 +89,6 @@ public class BallScript : MonoBehaviour
             {
                 
                 direction.x = -direction.x;
-                Debug.Log(paddleVel);
                 direction.y += paddleVel / dividingFac;
             }
 
