@@ -93,7 +93,7 @@ public class PaletteScript : MonoBehaviour
 
 
         //Send OSC message
-        var message = new OSCMessage(string.Format("/{0}/positiony", input));
+        var message = new OSCMessage(string.Format("/paddle/pos/y", input));
         // Populate values.
         message.AddValue(OSCValue.Int((int)transform.position.y));
         _transmitter.Send(message);
