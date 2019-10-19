@@ -145,3 +145,4 @@ MonoBehaviour:
   speed: 6
   dividingFac: 40
   dirFac: 1.5
+  gm: {fileID: 0}

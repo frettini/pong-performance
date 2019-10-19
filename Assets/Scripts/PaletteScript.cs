@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using extOSC;
-using extOSC.Core.Reflection;
-using extOSC.Components.Informers;
+
 
 public class PaletteScript : MonoBehaviour
 {
@@ -16,9 +15,9 @@ public class PaletteScript : MonoBehaviour
     public bool isRight;
     public float velocity;
 
-    OSCTransmitter transmitter;
+    private OSCTransmitter _transmitter;
 
-    float oldpos, newpos;
+    private float oldpos, newpos;
 
 
     // Start is called before the first frame update
@@ -26,12 +25,7 @@ public class PaletteScript : MonoBehaviour
     {
         height = transform.localScale.y;
 
-        // Creating a transmitter.
-        transmitter = gameObject.AddComponent<OSCTransmitter>();
-        // Set remote host address.
-        transmitter.RemoteHost = "127.0.0.1";
-        // Set remote port;
-        transmitter.RemotePort = 7000;
+        // Creating a transmitter
 
         oldpos = transform.position.y;
         
@@ -49,6 +43,8 @@ public class PaletteScript : MonoBehaviour
 
             isRight = isRightPaddle;
             input = "PaletteRight";
+
+            _transmitter = GameObject.Find("OSCTxRight").GetComponent<OSCTransmitter>();
             
 
 
@@ -60,6 +56,8 @@ public class PaletteScript : MonoBehaviour
 
             isRight = isRightPaddle;
             input = "PaletteLeft";
+
+            _transmitter = GameObject.Find("OSCTxLeft").GetComponent<OSCTransmitter>();
         }
 
         transform.position = pos;
@@ -94,14 +92,12 @@ public class PaletteScript : MonoBehaviour
         transform.Translate(move * Vector2.up);
 
 
-        var message = new OSCMessage(string.Format("/{0}", input));
-
+        //Send OSC message
+        var message = new OSCMessage(string.Format("/{0}/positiony", input));
         // Populate values.
         message.AddValue(OSCValue.Int((int)transform.position.y));
-        
+        _transmitter.Send(message);
 
-        // Send message.
-        transmitter.Send(message);
 
         calVelocity();
     }

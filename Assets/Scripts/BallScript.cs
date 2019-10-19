@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using extOSC;
 
 public class BallScript : MonoBehaviour
 {
@@ -22,8 +23,9 @@ public class BallScript : MonoBehaviour
     float paddleVel;
 
     public GameManager gm;
-    
-    
+
+    private OSCTransmitter _transmitter;
+
 
     // Start is called before the first frame update
     void Start()
