@@ -50,8 +50,6 @@ public class GameManager : MonoBehaviour
             {
                 //increment score of right player
                 scoreRight++;
-                Debug.Log("Right player : " + scoreRight);
-                
                 scoreRightText.text = scoreRight.ToString();
 
             }
@@ -59,7 +57,6 @@ public class GameManager : MonoBehaviour
             {
                 //increment score of left player
                 scoreLeft++;
-                Debug.Log("Left player : " + scoreLeft);
                 scoreLeftText.text = scoreLeft.ToString();
 
             }

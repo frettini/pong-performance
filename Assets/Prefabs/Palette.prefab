@@ -145,3 +145,5 @@ MonoBehaviour:
   speed: 15
   isRight: 0
   velocity: 0
+  rxPadPos: /paddle/pos/y
+  buffer: 0.2
