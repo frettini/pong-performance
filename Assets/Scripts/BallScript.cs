@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 using extOSC;
 
 public class BallScript : MonoBehaviour
@@ -10,7 +9,8 @@ public class BallScript : MonoBehaviour
 
     public GameManager gm;
 
-    public string address = "/ball"; 
+    public string address = "/ball";
+    public string speedAddr = "/ball/speed";
     #endregion
 
     #region Private Vars
@@ -28,10 +28,11 @@ public class BallScript : MonoBehaviour
     private Vector2 direction;
 
     private PaletteScript ps;
-    private float paddleVel;
+    private float paddleVel, speedRx;
 
 
     private OSCTransmitter _transmitterRight, _transmitterLeft;
+    private OSCReceiver _receiver;
 
     #endregion
 
@@ -39,11 +40,16 @@ public class BallScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        direction = Vector2.one.normalized;
+        speedRx = 1.0f;
+        direction = new Vector2(Random.Range(0.0f, 10.0f), Random.Range(0.0f, 10.0f)).normalized;
+        //direction = Vector2.one.normalized;
         radius = transform.localScale.x / 2;
 
         _transmitterRight = GameObject.Find("OSCTxRight").GetComponent<OSCTransmitter>();
         _transmitterLeft = GameObject.Find("OSCTxLeft").GetComponent<OSCTransmitter>();
+
+        _receiver = GameObject.Find("OSCRx").GetComponent<OSCReceiver>();
+        _receiver.Bind(speedAddr, ChangeSpeedRx);
 
 
     }
@@ -51,7 +57,7 @@ public class BallScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(direction * speed * Time.deltaTime);
+        transform.Translate(direction * speed * Time.deltaTime * (speedRx+0.1f));
 
         if(transform.position.y < GameManager.bottomLeft.y + radius && direction.y < 0)
         {
@@ -124,7 +130,7 @@ public class BallScript : MonoBehaviour
                 SendBang(_transmitterLeft, "/paddle/hit/ball");
             }
 
-            direction.x *= (1 + Math.Abs(direction.y)) / dirFac;
+            direction.x *= (1 + Mathf.Abs(direction.y)) / dirFac;
         }
     }
 
@@ -148,6 +154,13 @@ public class BallScript : MonoBehaviour
         message.AddValue(OSCValue.Impulse());
         _transmitter.Send(message);
 
+    }
+
+    private void ChangeSpeedRx(OSCMessage message)
+    {
+        float x = (float)message.Values[0].Value;
+
+        speedRx = x * 2.0f;
     }
 
 }
