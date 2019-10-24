@@ -14,7 +14,8 @@ public class PaletteScript : MonoBehaviour
     string input;
     public bool isRight;
     public float velocity;
-    public string rxPadPos = "/paddle/pos/y";
+    public string rxPadPosRight = "/paddle/right/pos/y";
+    public string rxPadPosLeft = "/paddle/left/pos/y";
 
     private OSCTransmitter _transmitter;
     private OSCReceiver _receiver;
@@ -32,8 +33,7 @@ public class PaletteScript : MonoBehaviour
         height = transform.localScale.y;
         oldpos = transform.position.y;
 
-        _receiver = GameObject.Find("OSCRx").GetComponent<OSCReceiver>();
-        _receiver.Bind(rxPadPos, PadPosOSC);
+        
 
     }
 
@@ -51,6 +51,8 @@ public class PaletteScript : MonoBehaviour
             input = "PaletteRight";
             //init transmitters
             _transmitter = GameObject.Find("OSCTxRight").GetComponent<OSCTransmitter>();
+            _receiver = GameObject.Find("OSCRx").GetComponent<OSCReceiver>();
+            _receiver.Bind(rxPadPosRight, PadPosOSC);
 
         }
         else
@@ -62,6 +64,8 @@ public class PaletteScript : MonoBehaviour
             input = "PaletteLeft";
 
             _transmitter = GameObject.Find("OSCTxLeft").GetComponent<OSCTransmitter>();
+            _receiver = GameObject.Find("OSCRx").GetComponent<OSCReceiver>();
+            _receiver.Bind(rxPadPosLeft, PadPosOSC);
         }
 
         //assign position and name
