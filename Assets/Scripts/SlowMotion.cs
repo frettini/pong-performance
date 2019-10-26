@@ -1,25 +1,49 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using extOSC;
 
 public class SlowMotion : MonoBehaviour
 {
-    public float slowDownFactor = 0.05f;
     public float slowDownLength = 2f;
 
+    public string slowMoAddress = "/scene/slowmo";
 
-    // Update is called once per frame
-    void Update()
+    private OSCReceiver _receiver;
+    private float slowDownFactor;
+
+
+    private void Start()
     {
-        Time.timeScale += (1f / slowDownFactor) * Time.unscaledDeltaTime;
-        Time.timeScale = Mathf.Clamp(Time.timeScale, 0f, 1f);
+        _receiver = GameObject.Find("OSCRx").GetComponent<OSCReceiver>();
+        _receiver.Bind(slowMoAddress, RxSlowMo);
+        slowDownFactor = 1f;
     }
+
+   
 
     public void doSlowDown()
     {
         Debug.Log("bullet time!");
         Time.timeScale = slowDownFactor;
-        Time.fixedDeltaTime = Time.timeScale * 0.2f;
+        Time.fixedDeltaTime = Time.fixedDeltaTime * slowDownFactor;
     }
     
+
+    private void RxSlowMo(OSCMessage message)
+    {
+        float x = (float)message.Values[0].Value;
+
+        if (x > 0.05f)
+        {
+            slowDownFactor = x;
+        }
+        else 
+        {
+            slowDownFactor = 0.05f;
+        }
+
+        doSlowDown();
+
+    }
 }
