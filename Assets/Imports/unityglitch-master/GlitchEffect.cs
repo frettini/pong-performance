@@ -10,13 +10,16 @@ to make commercial use of the work
 */
 
 using UnityEngine;
+using extOSC;
 
 [ExecuteInEditMode]
 [AddComponentMenu("Image Effects/GlitchEffect")]
 [RequireComponent(typeof(Camera))]
 public class GlitchEffect : MonoBehaviour
 {
-	public Texture2D displacementMap;
+    #region public variables
+
+    public Texture2D displacementMap;
 	public Shader Shader;
 	[Header("Glitch Intensity")]
 
@@ -29,7 +32,11 @@ public class GlitchEffect : MonoBehaviour
 	[Range(0, 1)]
 	public float colorIntensity;
 
-	private float _glitchup;
+    #endregion
+
+    #region private variables
+
+    private float _glitchup;
 	private float _glitchdown;
 	private float flicker;
 	private float _glitchupTime = 0.05f;
@@ -37,10 +44,26 @@ public class GlitchEffect : MonoBehaviour
 	private float _flickerTime = 0.5f;
 	private Material _material;
 
-	void Start()
+    private OSCReceiver _receiver;
+    [SerializeField]
+    private string glitchIntensity = "/glitch/intensity";
+    [SerializeField]
+    private string glitchFlip = "/glitch/Flip";
+    [SerializeField]
+    private string glitchColor = "/glitch/Color";
+
+    #endregion
+
+    void Start()
 	{
 		_material = new Material(Shader);
-	}
+
+        _receiver = GameObject.Find("OSCRx").GetComponent<OSCReceiver>();
+
+        _receiver.Bind(glitchIntensity, ReceiveGlitch);
+        _receiver.Bind(glitchFlip, ReceiveGlitch);
+        _receiver.Bind(glitchColor, ReceiveGlitch);
+    }
 
 	// Called by camera to apply image effect
 	void OnRenderImage(RenderTexture source, RenderTexture destination)
@@ -101,4 +124,24 @@ public class GlitchEffect : MonoBehaviour
 
 		Graphics.Blit(source, destination, _material);
 	}
+
+    private void ReceiveGlitch(OSCMessage message)
+    {
+        float x = (float)message.Values[0].Value;
+        string address = message.Address;
+
+        if (address.Contains("intensity"))
+        {
+
+            intensity = x;
+        }
+        else if (address.Contains("color"))
+        {
+            colorIntensity = x;
+        }
+        else if (address.Contains("flip"))
+        {
+            flipIntensity = x;
+        }
+    }
 }
