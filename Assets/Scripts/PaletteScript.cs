@@ -101,7 +101,7 @@ public class PaletteScript : MonoBehaviour
         {
             axis = 0;
         }
-        Debug.LogFormat("{0} and {1}", predictedpos, transform.position.y);
+
 
         float move = axis * Time.deltaTime * speed;
         

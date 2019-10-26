@@ -30,6 +30,7 @@ public class BallScript : MonoBehaviour
     private PaletteScript ps;
     private float paddleVel, speedRx;
 
+    private SlowMotion sm;
 
     private OSCTransmitter _transmitterRight, _transmitterLeft;
     private OSCReceiver _receiver;
@@ -51,6 +52,7 @@ public class BallScript : MonoBehaviour
         _receiver = GameObject.Find("OSCRx").GetComponent<OSCReceiver>();
         _receiver.Bind(speedAddr, ChangeSpeedRx);
 
+        sm = GameObject.Find("SlowMoGuys").GetComponent<SlowMotion>();
 
     }
 
@@ -118,7 +120,8 @@ public class BallScript : MonoBehaviour
                 direction.y += paddleVel / dividingFac;
 
                 SendBang(_transmitterRight, "/paddle/hit/ball" );
-
+                //bullet time slow motion
+                sm.doSlowDown();
 
             }
             if (!isRight && direction.x < 0)
@@ -128,6 +131,9 @@ public class BallScript : MonoBehaviour
                 direction.y += paddleVel / dividingFac;
 
                 SendBang(_transmitterLeft, "/paddle/hit/ball");
+                //bullet time slow motion
+                sm.doSlowDown();
+
             }
 
             direction.x *= (1 + Mathf.Abs(direction.y)) / dirFac;
