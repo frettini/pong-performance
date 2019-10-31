@@ -1365,7 +1365,7 @@ MonoBehaviour:
   localReceiver: {fileID: 0}
   localHost: 192.168.0.56
   localPort: 7000
-  remoteHost: 127.0.0.1
+  remoteHost: 192.168.0.12
   remotePort: 7000
   useBundle: 0
 --- !u!4 &1279709028
