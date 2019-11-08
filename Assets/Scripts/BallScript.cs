@@ -40,7 +40,7 @@ public class BallScript : MonoBehaviour
     void Start()
     {
         speedRx = 1.0f;
-        direction = new Vector2(Random.Range(0.0f, 10.0f), Random.Range(0.0f, 10.0f)).normalized;
+        direction = new Vector2(Random.Range(5f, 8.0f)*RandomSign(), Random.Range(-5.0f, 5.0f)).normalized;
         //direction = Vector2.one.normalized;
         radius = transform.localScale.x / 2;
 
@@ -137,7 +137,13 @@ public class BallScript : MonoBehaviour
         }
     }
 
-    private void SendFloat(OSCTransmitter _transmitter, string address, float value)
+    private int RandomSign()
+    {
+        return Random.Range(0f,1f) < 0.5 ? 1 : -1;
+    }
+    
+
+private void SendFloat(OSCTransmitter _transmitter, string address, float value)
     {
 
         //Send OSC message
@@ -163,7 +169,7 @@ public class BallScript : MonoBehaviour
     {
         float x = (float)message.Values[0].Value;
 
-        speedRx = x * 2.0f;
+        speedRx = x * 2.0f+0.1f;
     }
 
 }
