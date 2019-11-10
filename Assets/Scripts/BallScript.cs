@@ -96,7 +96,7 @@ public class BallScript : MonoBehaviour
         SendFloat(_transmitterLeft, "/ball/pos/x", transform.position.x);
         SendFloat(_transmitterLeft, "/ball/pos/y", transform.position.y);
         SendFloat(_transmitterRight, "/ball/pos/x", transform.position.x);
-        SendFloat(_transmitterLeft, "/ball/pos/y", transform.position.y);
+        SendFloat(_transmitterRight, "/ball/pos/y", transform.position.y);
 
     }
 
