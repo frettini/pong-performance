@@ -45,6 +45,10 @@ public class GlitchEffect : MonoBehaviour
 	private Material _material;
 
     private OSCReceiver _receiver;
+    private OSCTransmitter _transmitterRight, _transmitterLeft;
+    [SerializeField]
+    private string glitchBang = "/glitch/bang";
+
     [SerializeField]
     private string glitchIntensity = "/glitch/intensity";
     [SerializeField]
@@ -59,6 +63,8 @@ public class GlitchEffect : MonoBehaviour
 		_material = new Material(Shader);
 
         _receiver = GameObject.Find("OSCRx").GetComponent<OSCReceiver>();
+        _transmitterLeft = GameObject.Find("OSCTxLeft").GetComponent<OSCTransmitter>();
+        _transmitterRight = GameObject.Find("OSCTxRight").GetComponent<OSCTransmitter>();
 
         _receiver.Bind(glitchIntensity, ReceiveGlitch);
         _receiver.Bind(glitchFlip, ReceiveGlitch);
@@ -79,7 +85,8 @@ public class GlitchEffect : MonoBehaviour
 			_material.SetVector("direction", Quaternion.AngleAxis(Random.Range(0, 360) * colorIntensity, Vector3.forward) * Vector4.one);
 			flicker = 0;
 			_flickerTime = Random.value;
-		}
+            
+        }
 
 		if (colorIntensity == 0)
 			_material.SetFloat("filterRadius", 0);
@@ -109,7 +116,8 @@ public class GlitchEffect : MonoBehaviour
 
 			_glitchdown = 0;
 			_glitchdownTime = Random.value / 10f;
-		}
+            
+        }
 
 		if (flipIntensity == 0)
 			_material.SetFloat("flip_down", 1);
@@ -118,8 +126,11 @@ public class GlitchEffect : MonoBehaviour
 		{
 			_material.SetFloat("displace", Random.value * intensity);
 			_material.SetFloat("scale", 1 - Random.value * intensity);
-		}
-		else
+            SendBang(_transmitterRight, glitchBang);
+            SendBang(_transmitterLeft, glitchBang);
+
+        }
+        else
 			_material.SetFloat("displace", 0);
 
 		Graphics.Blit(source, destination, _material);
@@ -143,5 +154,16 @@ public class GlitchEffect : MonoBehaviour
         {
             flipIntensity = x;
         }
+    }
+
+    private void SendBang(OSCTransmitter _transmitter, string address)
+    {
+
+        //Send OSC message
+        var message = new OSCMessage(string.Format("{0}", address));
+        // Populate values.
+        message.AddValue(OSCValue.Impulse());
+        _transmitter.Send(message);
+
     }
 }
