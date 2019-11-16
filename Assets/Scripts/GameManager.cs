@@ -240,6 +240,22 @@ public class GameManager : MonoBehaviour
             ballIsInst = true;
 
         }
+        
+        foreach (GameObject circle in circleArr)
+        {
+            cs = circle.GetComponent<CircleScript>();
+
+            if (Random.Range(0f, 2f) > 1)
+            {
+                cs.isRight = true;
+            }
+            else
+            {
+                cs.isRight = false;
+            }
+        }
+
+
     }
 
     private void ColorChange(OSCMessage message)
