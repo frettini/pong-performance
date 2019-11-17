@@ -24,9 +24,8 @@ public class SlowMotion : MonoBehaviour
 
     public void doSlowDown()
     {
-        Debug.Log("bullet time!");
         Time.timeScale = slowDownFactor;
-        Time.fixedDeltaTime = Time.fixedDeltaTime * slowDownFactor;
+        Time.fixedDeltaTime = Time.fixedDeltaTime * (slowDownFactor+ 0.05f);
     }
     
 
@@ -34,13 +33,16 @@ public class SlowMotion : MonoBehaviour
     {
         float x = (float)message.Values[0].Value;
 
-        if (x > 0.05f)
+        if (x > 0.4f)
         {
+            
             slowDownFactor = x;
         }
-        else 
+        else
         {
-            slowDownFactor = 0.05f;
+            Debug.Log(x);
+
+            slowDownFactor = 0.4f;
         }
 
         doSlowDown();

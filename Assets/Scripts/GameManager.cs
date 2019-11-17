@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     private GameObject[] circleArr;
     private CircleScript cs;
     private SpriteRenderer sr;
+    private TrailRenderer trail;
 
     private BallScript ballS;
 
@@ -152,7 +153,7 @@ public class GameManager : MonoBehaviour
             if(circle != null)
             {
 
-
+            
             sr = circle.GetComponent<SpriteRenderer>();
             cs = circle.GetComponent<CircleScript>();
 
@@ -184,7 +185,8 @@ public class GameManager : MonoBehaviour
         }
 
         ballS.GetComponent<SpriteRenderer>().color = new Color((colorRight.r + colorLeft.r) / 2f, (colorRight.g + colorLeft.g) / 2f, (colorRight.b + colorLeft.b) / 2f);
-        
+        ballS.GetComponent<TrailRenderer>().startColor = new Color((colorRight.r + colorLeft.r) / 2f, (colorRight.g + colorLeft.g) / 2f, (colorRight.b + colorLeft.b) / 2f);
+
 
     }
 
@@ -236,6 +238,7 @@ public class GameManager : MonoBehaviour
 
             ballS = Instantiate(ball);
             ballS.GetComponent<SpriteRenderer>().color = new Color((colorRight.r + colorLeft.r) / 2f, (colorRight.g + colorLeft.g) / 2f, (colorRight.b + colorLeft.b) / 2f);
+            ballS.GetComponent<TrailRenderer>().startColor = new Color((colorRight.r + colorLeft.r) / 2f, (colorRight.g + colorLeft.g) / 2f, (colorRight.b + colorLeft.b) / 2f);
             ballS.gm = this;
             ballIsInst = true;
 

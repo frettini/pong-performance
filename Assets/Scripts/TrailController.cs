@@ -37,7 +37,7 @@ public class TrailController : MonoBehaviour
         //float from 0 to 120
         float x = (float)message.Values[0].Value;
 
-        x = map(x, 0f, 1f, 0f, 20f);
+        x = map(x, 0f, 1f, 0f, 40f);
 
         //from 0 to 1
         tr.time = x;
