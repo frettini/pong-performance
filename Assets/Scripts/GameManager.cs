@@ -24,7 +24,8 @@ public class GameManager : MonoBehaviour
     public float multiplier = 1f;
 
     private int scoreRight, scoreLeft;
-    private bool ballIsInst = true;
+    public bool ballIsInst = true;
+    public bool normalDestroy = true;
     private float partitionsize;
     private float partitionY;
 
@@ -35,8 +36,8 @@ public class GameManager : MonoBehaviour
 
     private BallScript ballS;
 
-    private Color colorRight = new Color(1f,1f,1f,0.5f);
-    private Color colorLeft = new Color(1f, 1f, 1f, 0.5f);
+    private Color colorRight;
+    private Color colorLeft;
     private Color oldColR, oldColL;
     private float amp = 0;
 
@@ -45,7 +46,16 @@ public class GameManager : MonoBehaviour
 
     private OSCReceiver _receiver;
 
+
     private void Awake()
+    {
+        //instantiate first ball
+        ballS = Instantiate(ball);
+        ballS.gm = this;
+    }
+
+    // Start is called before the first frame update
+    void Start()
     {
         //get coordinate to create level relative to screenwidth
         bottomLeft = Camera.main.ScreenToWorldPoint(new Vector2(0, 0));
@@ -64,10 +74,13 @@ public class GameManager : MonoBehaviour
 
         float offset = partitionsize;
 
+        colorRight = new Color(1f, 1f, 1f, 0.5f);
+        colorLeft = new Color(1f, 1f, 1f, 0.5f);
+
         oldColL = colorLeft;
         oldColR = colorRight;
 
-        
+
 
         //place circles on scene
         int t = 0;
@@ -93,11 +106,7 @@ public class GameManager : MonoBehaviour
                 t++;
             }
         }
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
         scoreRight = 0;
         scoreLeft = 0;
 
@@ -106,9 +115,7 @@ public class GameManager : MonoBehaviour
 
         
 
-        //instantiate first ball
-        ballS = Instantiate(ball);
-        ballS.gm = this;
+        
 
         //instantiate both palette and assign sides
         PaletteScript palette1 =  Instantiate(palette) as PaletteScript;
@@ -142,6 +149,16 @@ public class GameManager : MonoBehaviour
         {
             ColorManager(false);
             oldColL = colorLeft;
+        }
+
+        if(ballIsInst == false && normalDestroy == false)
+        {
+            ballS = Instantiate(ball);
+            ballS.GetComponent<SpriteRenderer>().color = new Color((colorRight.r + colorLeft.r) / 2f, (colorRight.g + colorLeft.g) / 2f, (colorRight.b + colorLeft.b) / 2f);
+            ballS.GetComponent<TrailRenderer>().startColor = new Color((colorRight.r + colorLeft.r) / 2f, (colorRight.g + colorLeft.g) / 2f, (colorRight.b + colorLeft.b) / 2f);
+            ballS.gm = this;
+            ballIsInst = true;
+            normalDestroy = true;
         }
     }
 
@@ -214,8 +231,9 @@ public class GameManager : MonoBehaviour
     public void IncrementScore(string player)
     {
         
-        if(ballIsInst == true)
-        {
+        
+
+        
             if(player == "PaletteRight")
             {
                 //increment score of right player
@@ -242,7 +260,7 @@ public class GameManager : MonoBehaviour
             ballS.gm = this;
             ballIsInst = true;
 
-        }
+        
         
         foreach (GameObject circle in circleArr)
         {

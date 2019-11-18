@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using extOSC;
+using UnityEngine.SceneManagement;
 
 public class BallScript : MonoBehaviour
 {
@@ -79,6 +80,7 @@ public class BallScript : MonoBehaviour
             SendBang(_transmitterLeft, "/point/lose");
             SendBang(_transmitterRight, "/point/win");
 
+            gm.normalDestroy = true;
             gm.IncrementScore("PaletteRight");
             Destroy(this.gameObject);
         }
@@ -88,6 +90,7 @@ public class BallScript : MonoBehaviour
             SendBang(_transmitterLeft, "/point/win");
             SendBang(_transmitterRight, "/point/lose");
 
+            gm.normalDestroy = true;
             gm.IncrementScore("PaletteLeft");
             Destroy(this.gameObject);
 
@@ -170,6 +173,18 @@ private void SendFloat(OSCTransmitter _transmitter, string address, float value)
         float x = (float)message.Values[0].Value;
 
         speedRx = x * 2.0f+0.1f;
+    }
+
+    private void OnDestroy()
+    {
+        gm.ballIsInst = false;
+
+        if(transform.position.x < (GameManager.topRight.x + radius-2f)  && transform.position.x > (GameManager.bottomLeft.x + radius+2f))
+        {
+            Debug.Log("Reset scene");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            
+        }
     }
 
 }

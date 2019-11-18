@@ -153,6 +153,8 @@ MonoBehaviour:
   closeOnPause: 0
   mapBundle: {fileID: 0}
   workInEditor: 1
+  localHostMode: 0
+  localHost: 192.168.0.56
   localPort: 7050
 --- !u!4 &68205655
 Transform:
@@ -1359,8 +1361,10 @@ MonoBehaviour:
   closeOnPause: 0
   mapBundle: {fileID: 0}
   workInEditor: 0
+  localHostMode: 0
   localPortMode: 2
   localReceiver: {fileID: 0}
+  localHost: 192.168.0.56
   localPort: 7000
   remoteHost: 192.168.43.180
   remotePort: 7000
@@ -1492,8 +1496,10 @@ MonoBehaviour:
   closeOnPause: 0
   mapBundle: {fileID: 0}
   workInEditor: 0
+  localHostMode: 0
   localPortMode: 2
   localReceiver: {fileID: 0}
+  localHost: 192.168.0.56
   localPort: 7000
   remoteHost: 127.0.0.1
   remotePort: 7001
@@ -1991,6 +1997,8 @@ MonoBehaviour:
   addrScaleRight: /scale/right
   addrScaleLeft: /scale/left
   multiplier: 2
+  ballIsInst: 1
+  normalDestroy: 1
 --- !u!4 &2068824174
 Transform:
   m_ObjectHideFlags: 0
