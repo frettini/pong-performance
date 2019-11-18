@@ -246,15 +246,20 @@ public class GameManager : MonoBehaviour
         
         foreach (GameObject circle in circleArr)
         {
-            cs = circle.GetComponent<CircleScript>();
+            
 
-            if (Random.Range(0f, 2f) > 1)
+            if (circle != null)
             {
-                cs.isRight = true;
-            }
-            else
-            {
-                cs.isRight = false;
+                cs = circle.GetComponent<CircleScript>();
+
+                if (Random.Range(0f, 2f) > 1)
+                {
+                    cs.isRight = true;
+                }
+                else
+                {
+                    cs.isRight = false;
+                }
             }
         }
 
