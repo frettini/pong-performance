@@ -20,6 +20,9 @@ public class PaletteScript : MonoBehaviour
     private OSCTransmitter _transmitter;
     private OSCReceiver _receiver;
 
+    private Transform paddleLeftPos;
+    private float paddleLeftY;
+
     private float oldpos, newpos, predictedpos;
 
     private float axis;
@@ -122,6 +125,15 @@ public class PaletteScript : MonoBehaviour
         var message = new OSCMessage(string.Format("/paddle/pos/y", input));
         // Populate values.
         message.AddValue(OSCValue.Float(transform.position.y));
+
+        if (isRight)
+        {
+            paddleLeftPos = GameObject.Find("PaletteLeft").GetComponent<Transform>();
+            if (paddleLeftPos != null)
+            {
+                message.AddValue(OSCValue.Float(paddleLeftPos.position.y));
+            }
+        }
         _transmitter.Send(message);
 
 

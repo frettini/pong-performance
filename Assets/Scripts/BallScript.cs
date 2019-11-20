@@ -122,6 +122,7 @@ public class BallScript : MonoBehaviour
                 direction.y += paddleVel / dividingFac;
 
                 SendBang(_transmitterRight, "/paddle/hit/ball" );
+                SendBang(_transmitterRight, "/paddle/hit/ball/left");
                 //bullet time slow motion
 
             }

@@ -8,9 +8,11 @@ public class TrailController : MonoBehaviour
 
     [SerializeField]
     private string trailAddress = "/ball/trail/length";
-    private float trailLen;
+    private string trailAddrLeft = "/ball/trail/length/left";
+    private float trailLen, oldTraiLen;
 
     private OSCReceiver _receiver;
+    private OSCTransmitter _transmitter;
     private TrailRenderer tr;
 
     private static float trailLenBall = 0f;
@@ -20,11 +22,29 @@ public class TrailController : MonoBehaviour
     {
         tr = GetComponent<TrailRenderer>();
 
+        _transmitter = GameObject.Find("OSCTxLeft").GetComponent<OSCTransmitter>();
         _receiver = GameObject.Find("OSCRx").GetComponent<OSCReceiver>();
         _receiver.Bind(trailAddress, ChangeTrailLen);
 
         tr.time = trailLenBall;
+        oldTraiLen = trailLenBall;
 
+    }
+
+    private void Update()
+    {
+        if(oldTraiLen != trailLenBall)
+        {
+            Debug.Log("changed trail length, send value to left");
+            //Send OSC message
+            var message = new OSCMessage(string.Format("{0}", trailAddrLeft));
+            // Populate values.
+            message.AddValue(OSCValue.Float((float)trailLenBall));
+            _transmitter.Send(message);
+
+
+            oldTraiLen = trailLenBall;
+        }
     }
 
     float map(float s, float from1, float from2, float to1, float to2)
