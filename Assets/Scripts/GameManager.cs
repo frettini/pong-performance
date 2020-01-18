@@ -63,15 +63,13 @@ public class GameManager : MonoBehaviour
         float width = topRight.x - bottomLeft.x;
         float height = topRight.y - bottomLeft.y;
 
-
+        //define partition size relative to screenwidth
         partitionsize = (float)topRight.x / partitionX;
         partitionY = (float)topRight.y / partitionsize;
-
         int x = (int)(partitionX * (partitionY + 1));
 
 
         circleArr = new GameObject[x];
-
         float offset = partitionsize;
 
         colorRight = new Color(1f, 1f, 1f, 0.5f);

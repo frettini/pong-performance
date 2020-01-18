@@ -20,8 +20,6 @@ public class SlowMotion : MonoBehaviour
         slowDownFactor = 1f;
     }
 
-   
-
     public void doSlowDown()
     {
         Time.timeScale = slowDownFactor;
@@ -32,19 +30,14 @@ public class SlowMotion : MonoBehaviour
     private void RxSlowMo(OSCMessage message)
     {
         float x = (float)message.Values[0].Value;
-
         if (x > 0.4f)
         {
-            
             slowDownFactor = x;
         }
         else
         {
-            Debug.Log(x);
-
             slowDownFactor = 0.4f;
         }
-
         doSlowDown();
 
     }
